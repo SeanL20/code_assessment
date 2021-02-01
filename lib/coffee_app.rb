@@ -1,11 +1,7 @@
 # Put your code here!
 
-def main
-	prices = load_prices
-end
-
-def load_prices
-	
-end
-
-main
+CoffeeApp = -> (prices_json, orders_json, payments_json){
+	puts prices_json
+	puts orders_json
+	puts payments_json
+}
