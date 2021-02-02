@@ -1,3 +1,5 @@
+require_relative "order_drinks"
+
 class UserOrder
 	attr_accessor :user_name, :drinks
   attr_reader :users
