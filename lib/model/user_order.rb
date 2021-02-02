@@ -1,5 +1,6 @@
 class UserOrder
 	attr_accessor :user_name, :drinks
+  attr_reader :users
 	
 	def initialize(user_name:, users:)
 		@user_name = user_name
