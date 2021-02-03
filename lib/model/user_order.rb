@@ -11,4 +11,8 @@ class UserOrder
 
 		@users.users << self
 	end
+
+	def empty?
+		return false if self
+	end
 end
