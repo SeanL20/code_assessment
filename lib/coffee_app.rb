@@ -27,9 +27,16 @@ def load_orders(orders_json)
 	orders = JSON.parse(orders_json)
 
 	orders.each do |order|
-		puts "TEST"
-		puts order
-		puts "TEST"
 	end
 	
+end
+
+def get_user(user_name, users)
+	if users.find_user(user_name: user_name).empty
+		user = UserOrder.new(user_name: user_name, users:users)
+	else
+		user = find_user(user_name: user_name)
+	end
+
+	return user
 end
