@@ -1,9 +1,10 @@
 # Put your code here!
 require_relative 'model/price_list'
+require_relative 'model/users'
 
 CoffeeApp = -> (prices_json, orders_json, payments_json){
-	# order_calculations(prices_json, orders_json)
 	price_list = load_prices(prices_json)
+	load_orders(orders_json)
 }
 
 def load_prices(prices_json)
@@ -20,11 +21,15 @@ def load_prices(prices_json)
 	return price_list
 end
 
+def load_orders(orders_json)
+	users = Users.new
 
-# def order_calculations(prices_json, orders_json)
-# 	order_prices = []
+	orders = JSON.parse(orders_json)
 
-# 	orders_json.each do |order|
-# 		puts order
-# 	end
-# end
+	orders.each do |order|
+		puts "TEST"
+		puts order
+		puts "TEST"
+	end
+	
+end
