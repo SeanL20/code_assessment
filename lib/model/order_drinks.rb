@@ -1,5 +1,5 @@
 class OrderDrinks
-	attr_accessor :drink_name, :size, 
+	attr_accessor :drink_name, :size
   attr_reader :user_order
 	
 	def initialize(drink_name:, size:, user_order:)
