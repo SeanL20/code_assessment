@@ -4,7 +4,7 @@ require_relative 'model/users'
 
 CoffeeApp = -> (prices_json, orders_json, payments_json){
 	price_list = load_prices(prices_json)
-	load_orders(orders_json)
+	user_orders = load_orders(orders_json)
 
 
 }
@@ -33,6 +33,8 @@ def load_orders(orders_json)
 
 		OrderDrinks.new(drink_name: order["drink"], size: order["size"], user_order: user)
 	end
+
+	return users
 end
 
 def get_user(user_name, users)
