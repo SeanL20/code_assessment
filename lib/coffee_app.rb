@@ -5,6 +5,8 @@ require_relative 'model/users'
 CoffeeApp = -> (prices_json, orders_json, payments_json){
 	price_list = load_prices(prices_json)
 	load_orders(orders_json)
+
+
 }
 
 def load_prices(prices_json)
@@ -27,15 +29,19 @@ def load_orders(orders_json)
 	orders = JSON.parse(orders_json)
 
 	orders.each do |order|
+		user = get_user(order["user"], users)
+
+		OrderDrinks.new(drink_name: order["drink"], size: order["size"], user_order: user)
 	end
-	
 end
 
 def get_user(user_name, users)
-	if users.find_user(user_name: user_name).empty
-		user = UserOrder.new(user_name: user_name, users:users)
+	user_check = users.find_user(user_name: user_name)
+
+	if user_check.empty?
+		user = UserOrder.new(user_name: user_name, users: users)
 	else
-		user = find_user(user_name: user_name)
+		user = users.find_user(user_name: user_name)
 	end
 
 	return user
