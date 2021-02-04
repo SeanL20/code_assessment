@@ -3,9 +3,13 @@ require_relative 'model/price_list'
 require_relative 'model/users'
 
 CoffeeApp = -> (prices_json, orders_json, payments_json){
+	# loads the price into the price_list variable
 	@price_list = load_prices(prices_json)
+	# loads the price into the iser_orders variable
 	@user_orders = load_orders(orders_json)
+	# calculate the total price and store it in the user_order.
 	calculate_total_price
+	# loads and calculate the payment from payments_json.
 	load_payment(payments_json)
 
 	result_json = @user_orders.users.map { |uo| {
