@@ -6,6 +6,15 @@ CoffeeApp = -> (prices_json, orders_json, payments_json){
 	price_list = load_prices(prices_json)
 	user_orders = load_orders(orders_json)
 	calculate_total_price(user_orders.users, price_list)
+
+	result_json = user_orders.users.map { |e| {
+		user: e.user_name,
+		order_total: e.total_price,
+		payment_total: 0,
+		balance: 0,
+	}}.to_json
+
+	return result_json
 }
 
 def load_prices(prices_json)
