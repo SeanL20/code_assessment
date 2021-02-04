@@ -11,7 +11,7 @@ CoffeeApp = -> (prices_json, orders_json, payments_json){
 	calculate_total_price
 	# loads and calculate the payment from payments_json.
 	load_payment(payments_json)
-
+	# calculate the balance using the user order class payment_total and price_total.
 	calculate_balance
 
 	result_json = @user_orders.users.map { |uo| {
