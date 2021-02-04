@@ -12,11 +12,13 @@ CoffeeApp = -> (prices_json, orders_json, payments_json){
 	# loads and calculate the payment from payments_json.
 	load_payment(payments_json)
 
+	calculate_balance
+
 	result_json = @user_orders.users.map { |uo| {
 		user: uo.user_name,
 		order_total: uo.total_price,
 		payment_total: uo.payment_total,
-		balance: 0,
+		balance: uo.balance < 0 ? 0 : uo.balance,
 	}}.to_json
 
 	return result_json
@@ -124,5 +126,11 @@ def calculate_payment_total(payment)
 	else
 		# if the user payment total is not nil then add the payment total with payment["amount"]
 		user.payment_total = user.payment_total + payment["amount"].to_f
+	end
+end
+
+def calculate_balance
+	@user_orders.users.each do |user|
+		user.balance = user.total_price - user.payment_total
 	end
 end
