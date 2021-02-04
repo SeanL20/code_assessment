@@ -3,14 +3,15 @@ require_relative 'model/price_list'
 require_relative 'model/users'
 
 CoffeeApp = -> (prices_json, orders_json, payments_json){
-	price_list = load_prices(prices_json)
-	user_orders = load_orders(orders_json)
-	calculate_total_price(user_orders.users, price_list)
+	@price_list = load_prices(prices_json)
+	@user_orders = load_orders(orders_json)
+	calculate_total_price
+	load_payment(payments_json)
 
-	result_json = user_orders.users.map { |e| {
-		user: e.user_name,
-		order_total: e.total_price,
-		payment_total: 0,
+	result_json = @user_orders.users.map { |uo| {
+		user: uo.user_name,
+		order_total: uo.total_price,
+		payment_total: uo.payment_total,
 		balance: 0,
 	}}.to_json
 
@@ -75,24 +76,49 @@ def get_user(user_name, users)
 end
 
 # function for the calculation of the total price.
-def calculate_total_price(user_orders, price_list)
-	user_orders.each do |user_order|
+def calculate_total_price
+	@user_orders.users.each do |user_order|
 		# get the total price of the user order by calling the get total price by calculating each user order.
-		total_price = get_total(user_order.drinks, price_list)
+		total_price = get_total(user_order.drinks)
 		# set the user's total price with the the total price calculated. 
 		user_order.total_price = total_price
 	end
 end
 
-def get_total(drinks, price_list)
+def get_total(drinks)
 	total_price = 0
 	drinks.each do |drink|
 		# retrieve the price of the drink by finding the drink name and size.
-		drink_price = price_list.find_by_name_size(drink_name: drink.drink_name, size: drink.size)
+		drink_price = @price_list.find_by_name_size(drink_name: drink.drink_name, size: drink.size)
 		# add the price of the drink retrieved to the total price.
 		total_price = total_price + drink_price.price
 	end
 
 	# returns the total price.
 	return total_price
+end
+
+def load_payment(payments_json)
+	# parse the payments_json to json so that it could be used.
+	payments = JSON.parse(payments_json)
+	
+	payments.each do |payment|
+		# call the function to calculate the payment and puts it into the user order payment total attribute.
+		calculate_payment_total(payment)
+	end
+
+end
+
+def calculate_payment_total(payment)
+	# retrieve user by finding the user from the user_name.
+	user = @user_orders.find_user(user_name: payment["user"])
+
+	# check if the user payment total is nil
+	if user.payment_total.nil?
+		# if the user payment total is nil then set it with payment["amount"]
+		user.payment_total = payment["amount"].to_f
+	else
+		# if the user payment total is not nil then add the payment total with payment["amount"]
+		user.payment_total = user.payment_total + payment["amount"].to_f
+	end
 end
