@@ -14,6 +14,7 @@ CoffeeApp = -> (prices_json, orders_json, payments_json){
 	# calculate the balance using the user order class payment_total and price_total.
 	calculate_balance
 
+	# maps the user order users to json string with keys "user", "order_total", "payment_total" and "balance".
 	result_json = @user_orders.users.map { |uo| {
 		user: uo.user_name,
 		order_total: uo.total_price,
@@ -21,6 +22,7 @@ CoffeeApp = -> (prices_json, orders_json, payments_json){
 		balance: uo.balance < 0 ? 0 : uo.balance,
 	}}.to_json
 
+	# returns the json string.
 	return result_json
 }
 
@@ -100,8 +102,8 @@ def get_total(drinks)
 		total_price = total_price + drink_price.price
 	end
 
-	# returns the total price.
-	return total_price
+	# Convert The TotalPrice To Float With 2 Decimal Place & Return Total Price.
+	return total_price.round(2)
 end
 
 def load_payment(payments_json)
@@ -126,11 +128,17 @@ def calculate_payment_total(payment)
 	else
 		# if the user payment total is not nil then add the payment total with payment["amount"]
 		user.payment_total = user.payment_total + payment["amount"].to_f
+		# Convert The Payment Total To Float With 2 Decimal Place.
+		user.payment_total = user.payment_total.round(2)
 	end
 end
 
+# calculate the balance using the user order class payment_total and price_total.
 def calculate_balance
 	@user_orders.users.each do |user|
+		# calculate the balance by minusing price_total from payment_total.
 		user.balance = user.total_price - user.payment_total
+		# Convert The Payment Total To Float With 2 Decimal Place.
+		user.balance = user.balance.round(2)
 	end
 end
