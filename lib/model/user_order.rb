@@ -5,7 +5,7 @@ class UserOrder
   attr_reader :users
 	
 	# initialize user class to contain user name, total price, payment_total and balance as well as the call back for the user class and hold multiple order drinks class.
-	def initialize(user_name:, users:, total_price: nil, payment_total: nil, balance:nil)
+	def initialize(user_name:, users:, total_price: 0.0, payment_total: 0.0, balance: 0.0)
 		@user_name = user_name
 		@drinks = []
 		@users = users
