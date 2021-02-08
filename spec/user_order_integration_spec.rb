@@ -109,6 +109,11 @@ RSpec.describe "integration" do
     it "has users find user has the balance" do
       expect(users.find_user(user_name: "coach").balance).to eq 0.0
     end
+
+    # checks if users class find users has a balance.
+    it "user order empty? check" do
+      expect(users.find_user(user_name: "coach").empty?).to eq false
+    end
   end
 
 end
