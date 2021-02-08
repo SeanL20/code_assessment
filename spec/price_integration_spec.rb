@@ -15,7 +15,7 @@ RSpec.describe "integration" do
     JSON
   }
 
-  describe Price do
+  describe Prices do
     subject(:price_lists) do
       price_list = PriceList.new
 
